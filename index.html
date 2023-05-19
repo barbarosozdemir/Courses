@@ -1,27 +1,81 @@
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-#myHeader {
-  background-color: lightblue;
-  color: black;
-  padding: 40px;
-  text-align: center;
-}
-#aaa {
-  background-color: lightblue;
-  width:200px;
-  color: black;
-  padding: 40px;
-  text-align: center;
-}
+<!doctype html>
+<html> 
+ <head> 
+  <title>Input Form</title> 
+  <style>
+    .error {
+      color: red;
+    }
+  </style> 
+ </head> 
+ <body> 
+  <h1>Input Form</h1> 
+  <form id="myForm"> <label for="name">Name:</label> 
+   <input type="text" id="name" required> 
+   <br> <label for="email">Email:</label> 
+   <input type="email" id="email" required> 
+   <br> <label for="age">Age:</label> 
+   <input type="number" id="age" required> 
+   <br> 
+   <input type="submit" value="Submit"> 
+  </form> 
+  <script>
+    document.getElementById("myForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent form submission
 
-</style>
-</head>
-<body>
+      var nameInput = document.getElementById("name");
+      var emailInput = document.getElementById("email");
+      var ageInput = document.getElementById("age");
 
-<h1 id="myHeader">My LAAAAYYYNNN Header</h1>
-<img id="aaa" src="keske.jpg" alt="">
-</body>
+      // Reset previous error messages
+      var errorMessages = document.getElementsByClassName("error");
+      while (errorMessages.length > 0) {
+        errorMessages[0].parentNode.removeChild(errorMessages[0]);
+      }
+
+      // Perform input validation
+      var isValid = true;
+
+      if (nameInput.value.trim() === "") {
+        isValid = false;
+        displayErrorMessage(nameInput, "Name cannot be blank");
+      }
+
+      if (emailInput.value.trim() === "") {
+        isValid = false;
+        displayErrorMessage(emailInput, "Email cannot be blank");
+      } else if (!validateEmail(emailInput.value)) {
+        isValid = false;
+        displayErrorMessage(emailInput, "Invalid email format");
+      }
+
+      if (ageInput.value.trim() === "") {
+        isValid = false;
+        displayErrorMessage(ageInput, "Age cannot be blank");
+      } else if (isNaN(ageInput.value)) {
+        isValid = false;
+        displayErrorMessage(ageInput, "Age must be a number");
+      }
+
+      if (isValid) {
+        // Perform form submission or further processing here
+        console.log("Form submitted successfully");
+        // Uncomment the line below to submit the form
+        // document.getElementById("myForm").submit();
+      }
+    });
+
+    function displayErrorMessage(inputElement, message) {
+      var errorElement = document.createElement("p");
+      errorElement.classList.add("error");
+      errorElement.textContent = message;
+      inputElement.parentNode.insertBefore(errorElement, inputElement.nextSibling);
+    }
+
+    function validateEmail(email) {
+      var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      return emailRegex.test(email);
+    }
+  </script> 
+ </body>
 </html>
-N
